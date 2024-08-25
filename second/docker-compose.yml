@@ -1,0 +1,24 @@
+services:
+
+  db:
+    image: postgres
+    restart: always
+    shm_size: 128mb
+    environment:
+      POSTGRES_PASSWORD: admin
+      POSTGRES_USER: admin
+      PGPORT: 5432
+      POSTGRES_DB: hw02
+
+  fast_api:
+    build: .
+    ports:
+      - "9000:9000"
+    environment:
+      PORT: 9000
+      CONNECTION_STRING: "postgresql+psycopg2://admin:admin@db:5432/hw02"
+    depends_on:
+      - db
+
+networks:
+  default:
